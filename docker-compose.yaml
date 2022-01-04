@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+
+  gateway:
+    image: gateway
+    volumes:
+    - ./gateway:/usr/src/app
+    build:
+      context: ./gateway
+      args:
+        TOKEN: ${NPM_TOKEN}
+    networks:
+      - backend-network
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./gateway/.env.development.local
+    restart: "on-failure"
+
+  user-svc:
+    image: user-svc
+    volumes:
+      - ./user:/usr/src/app
+    build:
+      context: ./user
+      args:
+        TOKEN: ${NPM_TOKEN}
+    networks:
+      - backend-network
+    expose:
+      - 50051
+    depends_on:
+      - rabbitmq
+      - gateway
+    env_file:
+      - ./user/.env.development.local
+    restart: on-failure
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    ports:
+        - "5672:5672"
+        - "5673:5673"
+        - "15672:15672"
+    networks:
+      - backend-network
+    restart: always
+
+  postgres:
+    image: postgres:latest
+    hostname: postgres
+    networks:
+      - backend-network
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin
+      POSTGRES_DB: microservices
+    restart: "on-failure"
+
+networks:
+  backend-network:
