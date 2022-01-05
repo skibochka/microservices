@@ -12,3 +12,13 @@ export interface ICreateUserInput {
   email: string;
   password: string;
 }
+
+export interface IGetUserInput {
+  email: string;
+}
+
+export interface IPayload {
+  id: number;
+  email: string;
+  username: string;
+}
