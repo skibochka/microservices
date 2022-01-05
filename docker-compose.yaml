@@ -38,6 +38,24 @@ services:
       - ./user/.env.development.local
     restart: on-failure
 
+  post-svc:
+    image: post-svc
+    volumes:
+      - ./post:/usr/src/app
+    build:
+      context: ./post
+      args:
+        TOKEN: ${NPM_TOKEN}
+    networks:
+      - backend-network
+    expose:
+      - 50052
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ./post/.env.development.local
+    restart: on-failure
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
