@@ -23,6 +23,7 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      whitelist: true,
     }),
   );
 
