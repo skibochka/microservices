@@ -17,9 +17,11 @@ export class AuthService {
   ) {}
 
   async signUp(data: ICreateUserInput) {
-    const emailExist = this.client.send('GET_USER_BY_EMAIL', {
-      email: data.email,
-    });
+    const emailExist = await this.client
+      .send('GET_USER_BY_EMAIL', {
+        email: data.email,
+      })
+      .toPromise();
     if (emailExist) {
       throw new BadRequestException('User with such email have already exists');
     }
