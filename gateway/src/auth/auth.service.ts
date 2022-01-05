@@ -4,13 +4,9 @@ import { firstValueFrom } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { hash } from 'bcrypt';
-import {
-  CREATE,
-  GET_USER_BY_EMAIL,
-  ICreateUserInput,
-  IPayload,
-  IUser,
-} from '../../../shared-lib/lib';
+import { IUser } from '../interfaces/user/user.interface';
+import { IJWTPayload } from '../interfaces/user/jwtPayload.interfaces';
+import { ICreateUserInput } from '../interfaces/user/createUser.interface';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +17,7 @@ export class AuthService {
   ) {}
 
   async signUp(data: ICreateUserInput) {
-    const emailExist = this.client.send(GET_USER_BY_EMAIL, {
+    const emailExist = this.client.send('GET_USER_BY_EMAIL', {
       email: data.email,
     });
     if (emailExist) {
@@ -31,7 +27,7 @@ export class AuthService {
     const saltRounds = this.configService.get('application.saltRounds');
     data.password = await hash(data.password, saltRounds);
 
-    const user = await firstValueFrom<IUser>(this.client.send(CREATE, data));
+    const user = await firstValueFrom<IUser>(this.client.send('CREATE', data));
 
     if (user) {
       return {
@@ -46,7 +42,7 @@ export class AuthService {
     throw new BadRequestException();
   }
 
-  async signIn(data: IPayload) {
+  async signIn(data: IJWTPayload) {
     return {
       accessToken: this.jwtService.sign({
         id: data.id,
@@ -57,6 +53,6 @@ export class AuthService {
   }
 
   async getUserByEmail(email: string) {
-    return firstValueFrom(this.client.send(GET_USER_BY_EMAIL, { email }));
+    return firstValueFrom(this.client.send('GET_USER_BY_EMAIL', { email }));
   }
 }

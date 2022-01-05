@@ -1,23 +1,19 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { UserService } from './user.service';
-import {
-  CREATE,
-  GET_USER_BY_EMAIL,
-  ICreateUserInput,
-  IGetUserInput,
-} from '../../../shared-lib/lib';
+import { ICreateUserInput } from '../interfaces/createUser.interface';
+import { IGetUserInput } from '../interfaces/getUser.interface';
 
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @MessagePattern(CREATE)
+  @MessagePattern('CREATE')
   async create(body: ICreateUserInput) {
     return this.userService.create(body);
   }
 
-  @MessagePattern(GET_USER_BY_EMAIL)
+  @MessagePattern('GET_USER_BY_EMAIL')
   async getUserByEmail(body: IGetUserInput) {
     return this.userService.getUserByEmail(body.email);
   }
