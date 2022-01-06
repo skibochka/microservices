@@ -3,6 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { INewPostInput } from '../interfaces/post/createPost.interface';
 import { IUpdatePostInput } from '../interfaces/post/updatePost.interface';
 import { IDeletePostInput } from '../interfaces/post/deletePost.interface';
+import { IGetPostsInput } from '../interfaces/post/getPosts.interface';
 
 @Injectable()
 export class PostService {
@@ -24,5 +25,9 @@ export class PostService {
 
   async getPost(id: number) {
     return this.client.send('GET_POST', { id }).toPromise();
+  }
+
+  async getPosts(data: IGetPostsInput) {
+    return this.client.send('GET_POSTS', data).toPromise();
   }
 }

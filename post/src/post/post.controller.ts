@@ -4,6 +4,7 @@ import { PostService } from './post.service';
 import { INewPostInput } from '../interfaces/newPost.interface';
 import { IUpdatePostInput } from '../interfaces/updatePost.interface';
 import { IDeletePostInput } from '../interfaces/deletePost.interface';
+import { IGetPostsInput } from '../interfaces/getPosts.interface';
 
 @Controller()
 export class PostController {
@@ -27,5 +28,10 @@ export class PostController {
   @MessagePattern('GET_POST')
   async getPost(data: { id: number }) {
     return this.postService.getPost(data.id);
+  }
+
+  @MessagePattern('GET_POSTS')
+  async getPosts(data: IGetPostsInput) {
+    return this.postService.getPosts(data);
   }
 }

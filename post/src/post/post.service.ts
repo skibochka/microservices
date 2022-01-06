@@ -6,6 +6,7 @@ import { INewPostInput } from '../interfaces/newPost.interface';
 import { IUpdatePostInput } from '../interfaces/updatePost.interface';
 import { IDeletePostInput } from '../interfaces/deletePost.interface';
 import { NotFoundError } from 'rxjs';
+import { IGetPostsInput } from '../interfaces/getPosts.interface';
 
 @Injectable()
 export class PostService {
@@ -65,5 +66,12 @@ export class PostService {
     }
 
     return new NotFoundError(`Post with ID ${id} does not exist`);
+  }
+
+  async getPosts(data: IGetPostsInput) {
+    return this.userRepository.find({
+      take: data.take,
+      skip: data.skip * data.page,
+    });
   }
 }

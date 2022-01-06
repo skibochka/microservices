@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { JwtAuthGuard } from '../auth/guards/jwtAuth.guard';
 import { CreatePostInputDto } from '../dto/post/createPost.dto';
 import { UpdatePostInputDto } from '../dto/post/updatePost.dto';
 import { postIdInputDto } from '../dto/post/deletePost.dto';
+import { getPostsInputDto } from '../dto/post/getPosts.dto';
 
 @Controller('post')
 export class PostController {
@@ -42,6 +44,11 @@ export class PostController {
       userId: req.user.id,
       postId: params.id,
     });
+  }
+
+  @Get('/all')
+  async getPosts(@Query() params: getPostsInputDto) {
+    return this.postService.getPosts(params);
   }
 
   @Get('/:id')
