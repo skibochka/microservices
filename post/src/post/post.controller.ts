@@ -3,6 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { PostService } from './post.service';
 import { INewPostInput } from '../interfaces/newPost.interface';
 import { IUpdatePostInput } from '../interfaces/updatePost.interface';
+import { IDeletePostInput } from '../interfaces/deletePost.interface';
 
 @Controller()
 export class PostController {
@@ -16,5 +17,10 @@ export class PostController {
   @MessagePattern('UPDATE_POST')
   async updatePost(data: IUpdatePostInput) {
     return this.postService.updatePost(data);
+  }
+
+  @MessagePattern('DELETE_POST')
+  async deletePost(data: IDeletePostInput) {
+    return this.postService.deletePost(data);
   }
 }

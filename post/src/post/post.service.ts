@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Post } from '../entities/post.entity';
 import { INewPostInput } from '../interfaces/newPost.interface';
 import { IUpdatePostInput } from '../interfaces/updatePost.interface';
+import { IDeletePostInput } from '../interfaces/deletePost.interface';
 
 @Injectable()
 export class PostService {
@@ -29,6 +30,24 @@ export class PostService {
 
       return new BadRequestException(
         "Permission denied. You can't update this post",
+      );
+    }
+
+    return new BadRequestException(
+      `Post with ID ${data.postId} does not exist`,
+    );
+  }
+
+  async deletePost(data: IDeletePostInput) {
+    const post = await this.userRepository.findOne({ id: data.postId });
+
+    if (post) {
+      if (post.authorId === data.userId) {
+        return this.userRepository.delete({ id: data.postId });
+      }
+
+      return new BadRequestException(
+        "Permission denied. You can't delete this post",
       );
     }
 

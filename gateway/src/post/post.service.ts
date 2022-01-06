@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { INewPostInput } from '../interfaces/post/createPost.interface';
 import { IUpdatePostInput } from '../interfaces/post/updatePost.interface';
-import { catchError, of } from 'rxjs';
+import { IDeletePostInput } from '../interfaces/post/deletePost.interface';
 
 @Injectable()
 export class PostService {
@@ -15,11 +15,10 @@ export class PostService {
   }
 
   async updatePost(data: IUpdatePostInput) {
-    return this.client.send('UPDATE_POST', data).pipe(
-      catchError((val) => {
-        console.log(val);
-        return of({ error: val.message });
-      }),
-    );
+    return this.client.send('UPDATE_POST', data).toPromise();
+  }
+
+  async deletePost(data: IDeletePostInput) {
+    return this.client.send('DELETE_POST', data).toPromise();
   }
 }
