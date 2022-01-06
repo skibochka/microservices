@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { ICreatePostInput } from '../interfaces/post/createPost.interface';
+import { INewPostInput } from '../interfaces/post/createPost.interface';
 
 @Injectable()
 export class PostService {
@@ -8,7 +8,7 @@ export class PostService {
     @Inject(process.env.POST_SERVICE_NAME) private readonly client: ClientProxy,
   ) {}
 
-  async newPost(data: ICreatePostInput) {
+  async newPost(data: INewPostInput) {
     return this.client.send('NEW_POST', data);
   }
 }

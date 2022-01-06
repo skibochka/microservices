@@ -1,5 +1,5 @@
-export interface ICreatePostInput {
-  authorId: number;
+export interface INewPostInput {
   title: string;
   text: string;
+  authorId: number;
 }
