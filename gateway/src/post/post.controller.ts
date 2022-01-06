@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
   Request,
@@ -10,7 +11,7 @@ import { PostService } from './post.service';
 import { JwtAuthGuard } from '../auth/guards/jwtAuth.guard';
 import { CreatePostInputDto } from '../dto/post/createPost.dto';
 import { UpdatePostInputDto } from '../dto/post/updatePost.dto';
-import { DeletePostInputDto } from '../dto/post/deletePost.dto';
+import { postIdInputDto } from '../dto/post/deletePost.dto';
 
 @Controller('post')
 export class PostController {
@@ -34,10 +35,15 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard)
   @Post('/delete/:id')
-  async deletePost(@Request() req, @Param() params: DeletePostInputDto) {
+  async deletePost(@Request() req, @Param() params: postIdInputDto) {
     return this.postService.deletePost({
       userId: req.user.id,
       postId: params.id,
     });
+  }
+
+  @Get('/:id')
+  async getPost(@Param() params: postIdInputDto) {
+    return this.postService.getPost(params.id);
   }
 }

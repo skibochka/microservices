@@ -21,4 +21,8 @@ export class PostService {
   async deletePost(data: IDeletePostInput) {
     return this.client.send('DELETE_POST', data).toPromise();
   }
+
+  async getPost(id: number) {
+    return this.client.send('GET_POST', { id }).toPromise();
+  }
 }

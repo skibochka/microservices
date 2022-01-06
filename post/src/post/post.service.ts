@@ -5,6 +5,7 @@ import { Post } from '../entities/post.entity';
 import { INewPostInput } from '../interfaces/newPost.interface';
 import { IUpdatePostInput } from '../interfaces/updatePost.interface';
 import { IDeletePostInput } from '../interfaces/deletePost.interface';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class PostService {
@@ -54,5 +55,15 @@ export class PostService {
     return new BadRequestException(
       `Post with ID ${data.postId} does not exist`,
     );
+  }
+
+  async getPost(id: number) {
+    const post = await this.userRepository.findOne({ id });
+
+    if (post) {
+      return post;
+    }
+
+    return new NotFoundError(`Post with ID ${id} does not exist`);
   }
 }

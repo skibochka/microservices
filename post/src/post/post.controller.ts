@@ -23,4 +23,9 @@ export class PostController {
   async deletePost(data: IDeletePostInput) {
     return this.postService.deletePost(data);
   }
+
+  @MessagePattern('GET_POST')
+  async getPost(data: { id: number }) {
+    return this.postService.getPost(data.id);
+  }
 }
