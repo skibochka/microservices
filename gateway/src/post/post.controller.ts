@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -24,7 +26,7 @@ export class PostController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/update')
+  @Patch('/update')
   async updatePost(@Request() req, @Body() body: UpdatePostInputDto) {
     return this.postService.updatePost({
       userId: req.user.id,
@@ -34,7 +36,7 @@ export class PostController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/delete/:id')
+  @Delete('/delete/:id')
   async deletePost(@Request() req, @Param() params: postIdInputDto) {
     return this.postService.deletePost({
       userId: req.user.id,
