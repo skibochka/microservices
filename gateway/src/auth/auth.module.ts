@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
-import { UserServiceClientOptions } from '../microservices/user-svc.options';
+import { UserServiceClientOptions } from '../microservices/userSvc.options';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';

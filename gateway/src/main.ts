@@ -4,7 +4,6 @@ import { ValidationPipe } from '@nestjs/common';
 
 (async () => {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -12,4 +11,6 @@ import { ValidationPipe } from '@nestjs/common';
       whitelist: true,
     }),
   );
+
+  await app.listen(3000);
 })();
